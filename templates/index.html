@@ -1,63 +1,150 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Inventario de Tabletas</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        h1 { margin-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f4f4f4; }
-        a { text-decoration: none; margin: 0 5px; }
-        .acciones a { color: #007bff; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Inventario de Tabletas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  margin: 0;
+}
+
+h1 {
+  margin: 0 0 10px;
+  font-size: 24px;
+}
+
+a {
+  text-decoration: none;
+  margin: 0 5px;
+  color: #007bff;
+  font-size: 16px;
+}
+
+.tabla-desktop {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.tabla-desktop th, .tabla-desktop td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tabla-desktop th {
+  background-color: #f4f4f4;
+}
+
+/* Estilo para tarjetas móviles */
+.tarjeta-producto {
+  display: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.tarjeta-producto h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.tarjeta-producto p {
+  margin: 2px 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.tarjeta-producto .acciones {
+  margin-top: 8px;
+}
+
+/* RESPONSIVE - Mobile */
+@media (max-width: 768px) {
+  .tabla-desktop {
+    display: none;
+  }
+
+  .tarjeta-producto {
+    display: block;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  a {
+    font-size: 14px;
+  }
+}
+
+  </style>
 </head>
 <body>
-    <h1>Inventario de Tabletas</h1>
-    <a href="{{ url_for('agregar') }}">➕ Agregar producto</a>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Procesador</th>
-            <th>RAM</th>
-            <th>Almacenamiento</th>
-            <th>Pantalla</th>
-            <th>Tarjeta de Video</th>
-            <th>Sistema Operativo</th>
-            <th>Otros</th>
-            <th>Mesón</th>
-            <th>Tipo</th>
-            <th>SKU</th>
-            <th>Cantidad</th>
-            <th>Actualizado</th>
-            <th>Acciones</th>
-        </tr>
-        {% for item in productos %}
-        <tr>
-            <td>{{ item.id }}</td>
-            <td>{{ item.nombre }}</td>
-            <td>{{ item.precio }}</td>
-            <td>{{ item.procesador }}</td>
-            <td>{{ item.ram }}</td>
-            <td>{{ item.almacenamiento }}</td>
-            <td>{{ item.pantalla }}</td>
-            <td>{{ item.tarjeta_video }}</td>
-            <td>{{ item.sistema_operativo }}</td>
-            <td>{{ item.otros }}</td>
-            <td>{{ item.meson }}</td>
-            <td>{{ item.tipo }}</td>
-            <td>{{ item.sku }}</td>
-            <td>{{ item.cantidad }}</td>
-            <td>{{ item.actualizado }}</td>
-            <td class="acciones">
-                <a href="{{ url_for('editar', id=item.id) }}">✏️ Editar</a>
-                <a href="{{ url_for('eliminar', id=item.id) }}" onclick="return confirm('¿Eliminar este producto?')">🗑️ Eliminar</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+  <h1>Inventario de Tabletas</h1>
+  <a href="{{ url_for('agregar') }}">➕ Agregar producto</a>
+
+  <!-- Tabla para escritorio -->
+  <table class="tabla-desktop">
+    <tr>
+      <th>ID</th><th>Nombre</th><th>Precio</th><th>Procesador</th><th>RAM</th>
+      <th>Almacenamiento</th><th>Pantalla</th><th>Tarjeta Video</th><th>SO</th>
+      <th>Otros</th><th>Mesón</th><th>Tipo</th><th>SKU</th><th>Cantidad</th><th>Actualizado</th><th>Acciones</th>
+    </tr>
+    {% for item in productos %}
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.nombre }}</td>
+      <td>{{ item.precio }}</td>
+      <td>{{ item.procesador }}</td>
+      <td>{{ item.ram }}</td>
+      <td>{{ item.almacenamiento }}</td>
+      <td>{{ item.pantalla }}</td>
+      <td>{{ item.tarjeta_video }}</td>
+      <td>{{ item.sistema_operativo }}</td>
+      <td>{{ item.otros }}</td>
+      <td>{{ item.meson }}</td>
+      <td>{{ item.tipo }}</td>
+      <td>{{ item.sku }}</td>
+      <td>{{ item.cantidad }}</td>
+      <td>{{ item.actualizado }}</td>
+      <td>
+        <a href="{{ url_for('editar', id=item.id) }}">✏️</a>
+        <a href="{{ url_for('eliminar', id=item.id) }}" onclick="return confirm('¿Eliminar este producto?')">🗑️</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <!-- Tarjetas para móvil -->
+  {% for item in productos %}
+  <div class="tarjeta-producto">
+    <h3>{{ item.nombre }}</h3>
+    <p><strong>Precio:</strong> {{ item.precio }} CLP</p>
+    <p><strong>Procesador:</strong> {{ item.procesador }}</p>
+    <p><strong>RAM:</strong> {{ item.ram }}</p>
+    <p><strong>Almacenamiento:</strong> {{ item.almacenamiento }}</p>
+    <p><strong>Pantalla:</strong> {{ item.pantalla }}</p>
+    <p><strong>Tarjeta de Video:</strong> {{ item.tarjeta_video }}</p>
+    <p><strong>Sistema Operativo:</strong> {{ item.sistema_operativo }}</p>
+    <p><strong>Otros:</strong> {{ item.otros }}</p>
+    <p><strong>Mesón:</strong> {{ item.meson }}</p>
+    <p><strong>Tipo:</strong> {{ item.tipo }}</p>
+    <p><strong>SKU:</strong> {{ item.sku }}</p>
+    <p><strong>Cantidad:</strong> {{ item.cantidad }}</p>
+    <p><strong>Actualizado:</strong> {{ item.actualizado }}</p>
+    <div class="acciones">
+      <a href="{{ url_for('editar', id=item.id) }}">✏️ Editar</a>
+      <a href="{{ url_for('eliminar', id=item.id) }}" onclick="return confirm('¿Eliminar este producto?')">🗑️ Eliminar</a>
+    </div>
+  </div>
+  {% endfor %}
 </body>
 </html>

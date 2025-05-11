@@ -1,61 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Agregar producto</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        form { max-width: 600px; }
-        label { display: block; margin-top: 10px; }
-        input { width: 100%; padding: 6px; }
-        button { margin-top: 15px; padding: 8px 12px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Agregar producto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background-color: #f7f7f7;
+    }
+
+    h2 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: #fff;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      input {
+        font-size: 13px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h2>Agregar nuevo producto</h2>
-    <form method="post">
-        <label>Nombre:</label>
-        <input name="nombre" required>
+  <h2>Agregar nuevo producto</h2>
+  <form method="post">
+    <label>Nombre:</label>
+    <input name="nombre" required>
 
-        <label>Precio:</label>
-        <input name="precio" type="number">
+    <label>Precio:</label>
+    <input name="precio" type="number">
 
-        <label>Procesador:</label>
-        <input name="procesador">
+    <label>Procesador:</label>
+    <input name="procesador">
 
-        <label>RAM:</label>
-        <input name="ram">
+    <label>RAM:</label>
+    <input name="ram">
 
-        <label>Almacenamiento:</label>
-        <input name="almacenamiento">
+    <label>Almacenamiento:</label>
+    <input name="almacenamiento">
 
-        <label>Pantalla:</label>
-        <input name="pantalla">
+    <label>Pantalla:</label>
+    <input name="pantalla">
 
-        <label>Tarjeta de Video:</label>
-        <input name="tarjeta_video">
+    <label>Tarjeta de Video:</label>
+    <input name="tarjeta_video">
 
-        <label>Sistema Operativo:</label>
-        <input name="sistema_operativo">
+    <label>Sistema Operativo:</label>
+    <input name="sistema_operativo">
 
-        <label>Otros:</label>
-        <input name="otros">
+    <label>Otros:</label>
+    <input name="otros">
 
-        <label>Mesón:</label>
-        <input name="meson">
+    <label>Mesón:</label>
+    <input name="meson">
 
-        <label>Tipo:</label>
-        <input name="tipo">
+    <label>Tipo:</label>
+    <input name="tipo">
 
-        <label>SKU:</label>
-        <input name="sku">
+    <label>SKU:</label>
+    <input name="sku">
 
-        <label>Cantidad:</label>
-        <input name="cantidad" type="number">
+    <label>Cantidad:</label>
+    <input name="cantidad" type="number">
 
-        <button type="submit">Guardar</button>
-    </form>
-    <br>
-    <a href="{{ url_for('index') }}">← Volver al inventario</a>
+    <button type="submit">Guardar</button>
+  </form>
+  <a href="{{ url_for('index') }}">← Volver al inventario</a>
 </body>
 </html>
