@@ -11,7 +11,7 @@ app = Flask(__name__)
 # RUTA PRINCIPAL - LISTAR
 @app.route("/")
 def index():
-    res = supabase.table("tabletas").select("*").execute()
+    res = supabase.table("inventory").select("*").execute()
     productos = res.data
     return render_template("index.html", productos=productos)
 
