@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        h1 { margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        a { text-decoration: none; margin: 0 5px; }
+        .acciones a { color: #007bff; }
+    </style>
+</head>
+<body>
+    <h1>Inventario</h1>
+    <a href="{{ url_for('agregar') }}">➕ Agregar producto</a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Cantidad</th>
+            <th>Actualizado</th>
+            <th>Acciones</th>
+        </tr>
+        {% for item in productos %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.categoria }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.actualizado }}</td>
+            <td class="acciones">
+                <a href="{{ url_for('editar', id=item.id) }}">✏️ Editar</a>
+                <a href="{{ url_for('eliminar', id=item.id) }}" onclick="return confirm('¿Eliminar este producto?')">🗑️ Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
