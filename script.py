@@ -19,24 +19,29 @@ def index():
 @app.route("/agregar", methods=["GET", "POST"])
 def agregar():
     if request.method == "POST":
+        def safe(field):  # helper para campos de texto
+            return request.form.get(field) or "N/A"
+
         data = {
-            "nombre": request.form["nombre"],
-            "precio": request.form.get("precio", type=int),
-            "procesador": request.form["procesador"],
-            "ram": request.form["ram"],
-            "almacenamiento": request.form["almacenamiento"],
-            "pantalla": request.form["pantalla"],
-            "tarjeta_video": request.form["tarjeta_video"],
-            "sistema_operativo": request.form["sistema_operativo"],
-            "otros": request.form["otros"],
-            "meson": request.form["meson"],
-            "tipo": request.form["tipo"],
-            "sku": request.form["sku"],
-            "cantidad": request.form.get("cantidad", type=int),
+            "nombre": safe("nombre"),
+            "precio": request.form.get("precio", type=int) or 0,
+            "procesador": safe("procesador"),
+            "ram": safe("ram"),
+            "almacenamiento": safe("almacenamiento"),
+            "pantalla": safe("pantalla"),
+            "tarjeta_video": safe("tarjeta_video"),
+            "sistema_operativo": safe("sistema_operativo"),
+            "otros": safe("otros"),
+            "meson": safe("meson"),
+            "tipo": safe("tipo"),
+            "sku": safe("sku"),
+            "cantidad": request.form.get("cantidad", type=int) or 0,
         }
-        supabase.table("tabletas").insert(data).execute()
+
+        supabase.table("inventory").insert(data).execute()
         return redirect(url_for("index"))
     return render_template("agregar.html")
+
 
 # RUTA EDITAR
 @app.route("/editar/<int:id>", methods=["GET", "POST"])
@@ -55,15 +60,15 @@ def editar(id):
             "tipo": request.form["tipo"],
             "cantidad": request.form.get("cantidad", type=int),
         }
-        supabase.table("tabletas").update(data).eq("id", id).execute()
+        supabase.table("inventory").update(data).eq("id", id).execute()
         return redirect(url_for("index"))
-    producto = supabase.table("tabletas").select("*").eq("id", id).execute().data[0]
+    producto = supabase.table("inventory").select("*").eq("id", id).execute().data[0]
     return render_template("editar.html", producto=producto)
 
 # RUTA ELIMINAR
 @app.route("/eliminar/<int:id>")
 def eliminar(id):
-    supabase.table("tabletas").delete().eq("id", id).execute()
+    supabase.table("inventory").delete().eq("id", id).execute()
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
