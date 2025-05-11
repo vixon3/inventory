@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inventario</title>
+    <title>Inventario de Tabletas</title>
     <style>
         body { font-family: Arial; padding: 20px; }
         h1 { margin-bottom: 10px; }
@@ -14,13 +14,23 @@
     </style>
 </head>
 <body>
-    <h1>Inventario</h1>
+    <h1>Inventario de Tabletas</h1>
     <a href="{{ url_for('agregar') }}">➕ Agregar producto</a>
     <table>
         <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Procesador</th>
+            <th>RAM</th>
+            <th>Almacenamiento</th>
+            <th>Pantalla</th>
+            <th>Tarjeta de Video</th>
+            <th>Sistema Operativo</th>
+            <th>Otros</th>
+            <th>Mesón</th>
+            <th>Tipo</th>
+            <th>SKU</th>
             <th>Cantidad</th>
             <th>Actualizado</th>
             <th>Acciones</th>
@@ -29,7 +39,17 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.nombre }}</td>
-            <td>{{ item.categoria }}</td>
+            <td>{{ item.precio }}</td>
+            <td>{{ item.procesador }}</td>
+            <td>{{ item.ram }}</td>
+            <td>{{ item.almacenamiento }}</td>
+            <td>{{ item.pantalla }}</td>
+            <td>{{ item.tarjeta_video }}</td>
+            <td>{{ item.sistema_operativo }}</td>
+            <td>{{ item.otros }}</td>
+            <td>{{ item.meson }}</td>
+            <td>{{ item.tipo }}</td>
+            <td>{{ item.sku }}</td>
             <td>{{ item.cantidad }}</td>
             <td>{{ item.actualizado }}</td>
             <td class="acciones">
