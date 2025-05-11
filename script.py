@@ -3,7 +3,7 @@ from supabase import create_client
 
 # Configuración de Supabase
 url = "https://fggoijrprvtpjqnsmmyc.supabase.co"
-key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  # clave anon
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnZ29panJwcnZ0cGpxbnNtbXljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY5Nzg2NDksImV4cCI6MjA2MjU1NDY0OX0.JT9IgkEMuWpwygx88fWVZbirhhRtlVFoZy4faKjx6yk"  # clave anon
 supabase = create_client(url, key)
 
 app = Flask(__name__)
