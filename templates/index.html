@@ -91,6 +91,12 @@ a {
   <h1>Inventario</h1>
   <a href="{{ url_for('agregar') }}">➕ Agregar producto</a>
 
+  <form method="get" action="/" style="margin-bottom: 20px;">
+  <input type="text" name="q" placeholder="Buscar por nombre o SKU" value="{{ query }}" style="padding: 8px; width: 300px;">
+  <button type="submit" style="padding: 8px;">Buscar</button>
+</form>
+
+
   <!-- Tabla para escritorio -->
   <table class="tabla-desktop">
     <tr>

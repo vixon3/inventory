@@ -13,11 +13,25 @@ supabase = create_client(url, key)
 app = Flask(__name__)
 
 # RUTA PRINCIPAL - LISTAR
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
+    query = request.args.get("q", "").strip().lower()
+    productos = []
+
+    # Cargar todos los productos si hay búsqueda (filtrar en Python)
     res = supabase.table("inventory").select("*").execute()
-    productos = res.data
-    return render_template("index.html", productos=productos)
+    todos = res.data
+
+    if query:
+        for prod in todos:
+            for campo in prod.values():
+                if campo and query in str(campo).lower():
+                    productos.append(prod)
+                    break  # si hace match con cualquier campo, lo agrega y sigue
+    else:
+        productos = todos
+
+    return render_template("index.html", productos=productos, query=query)
 
 # RUTA AGREGAR
 @app.route("/agregar", methods=["GET", "POST"])
