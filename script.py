@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from supabase import create_client
+from io import BytesIO
+import os
+import barcode
+from barcode.writer import ImageWriter
 
 # Configuración de Supabase
 url = "https://fggoijrprvtpjqnsmmyc.supabase.co"
@@ -19,9 +23,37 @@ def index():
 @app.route("/agregar", methods=["GET", "POST"])
 def agregar():
     if request.method == "POST":
-        def safe(field):  # helper para campos de texto
-            return request.form.get(field) or "N/A"
+        def safe(field): return request.form.get(field) or "N/A"
 
+        # Paso 1: obtener SKU y generar código de barras
+        sku = safe("sku")
+        ean_code = str(sku)  # usaremos el SKU directamente como EAN
+
+        try:
+            filename = f"{ean_code}.png"
+            filepath = os.path.join("/tmp", filename)  # Render
+
+
+            # Generar y guardar imagen del código de barras
+            ean = barcode.get('ean13', ean_code, writer=ImageWriter())
+            ean.save(filepath[:-4])  # quitar .png porque ean.save() lo agrega
+
+            # Subir a Supabase
+            with open(filepath, "rb") as f:
+                supabase.storage.from_('barcodes').upload(
+                    path=filename,
+                    file=f,
+                    file_options={"content-type": "image/png"}
+                )
+
+            # Obtener URL y limpiar
+            public_url = supabase.storage.from_('barcodes').get_public_url(filename)
+            os.remove(filepath)
+        except Exception as e:
+            print("⚠️ No se pudo subir a Supabase Storage:", e)
+            public_url = ""
+
+        # Paso 2: construir datos del producto
         data = {
             "nombre": safe("nombre"),
             "precio": request.form.get("precio", type=int) or 0,
@@ -34,13 +66,16 @@ def agregar():
             "otros": safe("otros"),
             "meson": safe("meson"),
             "tipo": safe("tipo"),
-            "sku": safe("sku"),
+            "sku": sku,
             "cantidad": request.form.get("cantidad", type=int) or 0,
+            "codigo_barras_url": public_url
         }
 
         supabase.table("inventory").insert(data).execute()
         return redirect(url_for("index"))
+
     return render_template("agregar.html")
+
 
 
 # RUTA EDITAR
@@ -70,6 +105,16 @@ def editar(id):
 def eliminar(id):
     supabase.table("inventory").delete().eq("id", id).execute()
     return redirect(url_for("index"))
+
+
+"""# ✅ AHORA PUEDES USARLA
+sku = 2000396937469
+codigo_barras = str(sku)  # ya es un EAN-13 válido
+ean = barcode.get('ean13', codigo_barras, writer=ImageWriter())
+ean.save("codigo_barras")
+
+ean = barcode.get('ean13', codigo_barras, writer=ImageWriter())
+ean.save("codigo_barras")"""
 
 if __name__ == "__main__":
     app.run(debug=True)
