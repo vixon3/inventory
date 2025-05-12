@@ -139,6 +139,7 @@ a {
     <p><strong>Mesón:</strong> {{ item.meson }}</p>
     <p><strong>Tipo:</strong> {{ item.tipo }}</p>
     <p><strong>SKU:</strong> {{ item.sku }}</p>
+    <p><a href="{{ item['codigo_barras_url'] }}" target="_blank">Ver código</a><br><img src="{{ item['codigo_barras_url'] }}" width="150"></p>
     <p><strong>Cantidad:</strong> {{ item.cantidad }}</p>
     <p><strong>Actualizado:</strong> {{ item.actualizado }}</p>
     <div class="acciones">
