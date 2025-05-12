@@ -16,22 +16,30 @@ app = Flask(__name__)
 @app.route("/", methods=["GET"])
 def index():
     query = request.args.get("q", "").strip().lower()
+    orden_precio = request.args.get("orden_precio", "")
     productos = []
 
-    # Cargar todos los productos si hay búsqueda (filtrar en Python)
+    # Cargar todos los productos
     res = supabase.table("inventory").select("*").execute()
     todos = res.data
 
+    # Filtrar por texto (en cualquier campo)
     if query:
         for prod in todos:
             for campo in prod.values():
                 if campo and query in str(campo).lower():
                     productos.append(prod)
-                    break  # si hace match con cualquier campo, lo agrega y sigue
+                    break
     else:
         productos = todos
 
-    return render_template("index.html", productos=productos, query=query)
+    # Ordenar por precio si se especifica
+    if orden_precio == "desc":
+        productos.sort(key=lambda x: x.get("precio", 0), reverse=True)
+    else:
+        productos.sort(key=lambda x: x.get("precio", 0))
+
+    return render_template("index.html", productos=productos, query=query, orden_precio=orden_precio)
 
 # RUTA AGREGAR
 @app.route("/agregar", methods=["GET", "POST"])

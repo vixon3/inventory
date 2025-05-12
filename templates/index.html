@@ -91,11 +91,17 @@ a {
   <h1>Inventario</h1>
   <a href="{{ url_for('agregar') }}">➕ Agregar producto</a>
 
-  <form method="get" action="/" style="margin-bottom: 20px;">
-  <input type="text" name="q" placeholder="Buscar por nombre o SKU" value="{{ query }}" style="padding: 8px; width: 300px;">
-  <button type="submit" style="padding: 8px;">Buscar</button>
+<form method="get" action="/" style="margin-bottom: 20px;">
+  <input type="text" name="q" placeholder="Buscar..." value="{{ query or '' }}" style="padding: 8px; width: 250px;">
+  
+  <select name="orden_precio" style="padding: 8px;">
+    <option value="">Ordenar por precio</option>
+    <option value="asc" {% if orden_precio == 'asc' %}selected{% endif %}>Ascendiente</option>
+    <option value="desc" {% if orden_precio == 'desc' %}selected{% endif %}>Descendiente</option>
+  </select>
+  
+  <button type="submit" style="padding: 8px;">Aplicar</button>
 </form>
-
 
   <!-- Tabla para escritorio -->
   <table class="tabla-desktop">
