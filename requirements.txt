@@ -3,3 +3,4 @@ gunicorn
 supabase
 python-barcode
 Pillow
+pytz
