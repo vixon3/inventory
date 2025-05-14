@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from supabase import create_client
 from io import BytesIO
+from datetime import datetime
+from dateutil import parser
 import os
 import barcode
 from barcode.writer import ImageWriter
@@ -38,6 +40,15 @@ def index():
         productos.sort(key=lambda x: x.get("precio", 0), reverse=True)
     else:
         productos.sort(key=lambda x: x.get("precio", 0))
+
+    for item in productos:
+        actualizado = item.get("actualizado")
+        if actualizado and isinstance(actualizado, str):
+            try:
+                # Usamos dateutil.parser para parsear cualquier formato ISO8601
+                item["actualizado"] = parser.isoparse(actualizado)
+            except Exception:
+                item["actualizado"] = None
 
     return render_template("index.html", productos=productos, query=query, orden_precio=orden_precio)
 
@@ -90,7 +101,9 @@ def agregar():
             "tipo": safe("tipo"),
             "sku": sku,
             "cantidad": request.form.get("cantidad", type=int) or 0,
-            "codigo_barras_url": public_url
+            "codigo_barras_url": public_url,
+            "actualizado": datetime.now().isoformat()
+
         }
 
         supabase.table("inventory").insert(data).execute()
@@ -116,6 +129,8 @@ def editar(id):
             "meson": request.form["meson"],
             "tipo": request.form["tipo"],
             "cantidad": request.form.get("cantidad", type=int),
+            "actualizado": datetime.now().isoformat()
+
         }
         supabase.table("inventory").update(data).eq("id", id).execute()
         return redirect(url_for("index"))

@@ -127,7 +127,7 @@ a {
       <td>{{ item.sku }}</td>
       <td><a href="{{ item['codigo_barras_url'] }}" target="_blank">Ver código</a><br><img src="{{ item['codigo_barras_url'] }}" width="150"></td>
       <td>{{ item.cantidad }}</td>
-      <td>{{ item.actualizado }}</td>
+      <td>{{ item.actualizado.strftime("%Y-%m-%d %H:%M") }}</td>
       <td>
         <a href="{{ url_for('editar', id=item.id) }}">✏️</a>
         <a href="{{ url_for('eliminar', id=item.id) }}" onclick="return confirm('¿Eliminar este producto?')">🗑️</a>
@@ -153,7 +153,7 @@ a {
     <p><strong>SKU:</strong> {{ item.sku }}</p>
     <p><a href="{{ item['codigo_barras_url'] }}" target="_blank">Ver código</a><br><img src="{{ item['codigo_barras_url'] }}" width="150"></p>
     <p><strong>Cantidad:</strong> {{ item.cantidad }}</p>
-    <p><strong>Actualizado:</strong> {{ item.actualizado }}</p>
+    <p><strong>Actualizado:</strong> {{ item.actualizado.strftime("%Y-%m-%d %H:%M") }}</p>
     <div class="acciones">
       <a href="{{ url_for('editar', id=item.id) }}">✏️ Editar</a>
       <a href="{{ url_for('eliminar', id=item.id) }}" onclick="return confirm('¿Eliminar este producto?')">🗑️ Eliminar</a>
