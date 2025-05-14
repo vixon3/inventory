@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from supabase import create_client
-from io import BytesIO
+import pytz
 from datetime import datetime
 from dateutil import parser
 import os
@@ -11,6 +11,9 @@ from barcode.writer import ImageWriter
 url = "https://fggoijrprvtpjqnsmmyc.supabase.co"
 key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnZ29panJwcnZ0cGpxbnNtbXljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY5Nzg2NDksImV4cCI6MjA2MjU1NDY0OX0.JT9IgkEMuWpwygx88fWVZbirhhRtlVFoZy4faKjx6yk"  # clave anon
 supabase = create_client(url, key)
+
+chile_tz = pytz.timezone("America/Santiago")
+ahora_chile = datetime.now(chile_tz)
 
 app = Flask(__name__)
 
@@ -102,7 +105,7 @@ def agregar():
             "sku": sku,
             "cantidad": request.form.get("cantidad", type=int) or 0,
             "codigo_barras_url": public_url,
-            "actualizado": datetime.now().isoformat()
+            "actualizado": ahora_chile.isoformat()
 
         }
 
@@ -129,7 +132,7 @@ def editar(id):
             "meson": request.form["meson"],
             "tipo": request.form["tipo"],
             "cantidad": request.form.get("cantidad", type=int),
-            "actualizado": datetime.now().isoformat()
+            "actualizado": ahora_chile.isoformat()
 
         }
         supabase.table("inventory").update(data).eq("id", id).execute()
